@@ -6,15 +6,35 @@ from app.plex import plex
 from config.config import Config
 
 
+def custom_sort_key(url):
+    if '127.0' in url:
+        return (0, url)
+    elif '192.168' in url:
+        return (1, url)
+    else:
+        return (2, url)
+
+
 class Client:
     def __init__(self) -> None:
         self.client = self.connect_client()
 
     def connect_client(self):
+        print("Logging into Plex account")
         account = MyPlexAccount(Config.PLEX_USERNAME, Config.PLEX_PASSWORD)
+        print("Logged in!")
+        print("Finding client")
         for device in account.devices():
             if device.clientIdentifier == Config.PLEX_MACHINE_IDENTIFIER:
-                return device.connect()
+                print("Connecting to Plex client")
+                # print(type(device.connections))
+                device.connections = sorted(
+                    device.connections, key=custom_sort_key)
+                # print(device.connections)
+                client = device.connect()
+                # print(vars(device))
+                print("Connected to Plex client!")
+                return client
 
     def play(self):
         self.client.play()
@@ -54,7 +74,6 @@ class Client:
         self.client.playMedia(media)
 
     def timeline(self):
-        # Media is media object
         return self.client.timeline
 
     def is_playing(self):

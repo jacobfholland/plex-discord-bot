@@ -23,7 +23,7 @@ async def search(
         results = Library().search(title=query, year=int(year))
     else:
         results = Library().search(title=query)
-    response = "**SEARCH RESULTS**:"
+    response = "**SEARCH RESULTS**"
     response += "\n--------------------\n"
     response += "*(use /play command with Media ID to play item)*"
     response += "\n--------------------\n"
@@ -74,7 +74,7 @@ async def resume(ctx):
 async def queue(ctx):
     try:
         play_time = datetime.now()
-        response = "**QUEUE ITEMS**:"
+        response = "**QUEUE ITEMS**"
         response += "\n--------------------\n"
         for item in client.queue_items():
             runtime = (item.duration - item.viewOffset)

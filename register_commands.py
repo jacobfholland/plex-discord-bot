@@ -1,6 +1,8 @@
 import requests
-from config.config import Config
 import time
+
+from config.config import Config
+
 # Set your bot token and the ID of the target guild/server
 
 
@@ -78,8 +80,7 @@ def register():
 
     # Send the GET request to fetch the existing slash commands
     headers = {
-        "Authorization": f"Bot {Config.DISCORD_BOT_TOKEN}",
-        "Content-Type": "application/json"
+        "Authorization": f"Bot {Config.DISCORD_BOT_TOKEN}"
     }
 
     existing_commands_response = requests.get(url, headers=headers)
@@ -93,7 +94,7 @@ def register():
     existing_commands = existing_commands_response.json()
     existing_command_names = {command['name'] for command in existing_commands}
 
-    print(existing_command_names)
+    # print(vars(existing_commands_response))
 
     # Register new commands
     for command in commands:

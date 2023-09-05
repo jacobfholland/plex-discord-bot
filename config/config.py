@@ -7,8 +7,8 @@ load_dotenv(find_dotenv())
 
 class Config:
 
-    PLEX_IP_ADDRESS = "http://192.168.0.61"
-    PLEX_PORT = "32400"
+    PLEX_IP_ADDRESS = os.environ.get("PLEX_URL")
+    PLEX_PORT = int(os.environ.get("PLEX_PORT"))
     PLEX_URL = os.environ.get("PLEX_URL")
     PLEX_TOKEN = os.environ.get("PLEX_TOKEN")
     PLEX_PASSWORD = os.environ.get("PLEX_PASSWORD")
