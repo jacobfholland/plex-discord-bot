@@ -55,27 +55,27 @@ TODO: Environment variables will not-reset themselves if they already exist at r
 #### PLEX
 - `PLEX_URL`
     - The URL of your plex server. Including HTTP/HTTP protocal. (Ex http://192.168.0.69)
-- `PLEX_PORT`
+- `PLEX_PORT` *(int)*
     - Port for the plex server
-- `PLEX_TOKEN`
+- `PLEX_TOKEN` *(str)*
     - Plex server authentication token. To find this see obtaining a [Plex Token](#)
-- `PLEX_MACHINE_IDENTIFIER`
+- `PLEX_MACHINE_IDENTIFIER` *(str)*
     - Plex client machine identifier (client identifier). To find this see obtaining a [Machine Identifier](#). A machine identifier is a unique ID for the plex client you are controlling.
-- `PLEX_USERNAME`
+- `PLEX_USERNAME` *(str)*
     - Plex username
-- `PLEX_PASSWORD`
+- `PLEX_PASSWORD` *(str)*
     - Plex password
-- `PLEX_SEARCH_LIMIT`
+- `PLEX_SEARCH_LIMIT` *(int)*
     - The number of results to be returned when running commands that return multiple records, such as */search* and */queue*. Discord has a 2,000 character limit. Keep that in mind when setting this value.
-- `PLEX_ATTEMPTS`
+- `PLEX_ATTEMPTS` *(int)*
     - Due to some weird Plex API quirks occasionally multiple request attempts must be made for a successful data response. This should usually not require more than 3.
-- `PLEX_ATTEMPT_TIMEOUT`
+- `PLEX_ATTEMPT_TIMEOUT` *(int)*
     - The timeout between *PLEX_ATTEMPTS* in seconds. Usually 1 second is fine. You may need 2 seconds if you are noticing significant failures.
 
 #### DISCORD
-- `DISCORD_BOT_TOKEN`
+- `DISCORD_BOT_TOKEN` *(str)*
     - Discord bot token found on your Discord [developer portal](https://discord.com/developers/applications/)
-- `DISCORD_BOT_ID`
+- `DISCORD_BOT_ID` *(int)*
     - Discord bot ID (application ID) found on your Discord [developer portal](https://discord.com/developers/applications/)
-- `DISCORD_GUILD_ID`
+- `DISCORD_GUILD_ID` *(int)*
     - The Discord server ID. You can right click the server and select *Copy Server ID*
