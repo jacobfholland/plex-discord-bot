@@ -15,7 +15,7 @@ load_envs()
 
 
 class Config:
-    APP_NAME = os.environ.get("APP_NAME").replace(" ", "-")
+    APP_NAME = os.environ.get("APP_NAME")
     APP_TIMEZONE = os.environ.get("APP_TIMEZONE")
 
     LOG_SENSITIVE_DATA = eval(os.environ.get("LOG_SENSITIVE_DATA"))

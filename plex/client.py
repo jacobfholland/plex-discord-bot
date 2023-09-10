@@ -26,8 +26,8 @@ class Client():
     def __init__(self, obj):
         self.obj = obj
 
-    def request_timeline(self, attempt=2):
-        logger.info("Requesting timeline")
+    def request_timeline(self, attempt=1):
+        logger.info(f"Requesting timeline (attempt: {attempt})")
         if attempt == Config.PLEX_ATTEMPTS:
             return None
         timeline = self.obj.timeline
@@ -36,7 +36,7 @@ class Client():
                 f"Timeline retrieved (playQueueID: {timeline.playQueueID})")
             return timeline
         logger.warning(
-            f"Requesting timeline request (attempt: {attempt})")
+            f"Timeline request failed, reattempting")
         time.sleep(Config.PLEX_ATTEMPT_TIMEOUT)
         return self.request_timeline(attempt=attempt+1)
 

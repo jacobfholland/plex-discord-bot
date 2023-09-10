@@ -1,46 +1,15 @@
-from datetime import datetime, timedelta
-
 import discord
-import pytz
-
-from bot.config import Config
-from bot.log import logger
+from discord_bot.log import logger
+from discord_bot.utils import append_items, append_search
 from plex.client import client
 from plex.library import Library
 from plex.plex import plex
-
-bot = discord.Bot()
+from discord_bot.discord import bot
 
 
 @bot.event
 async def on_ready():
-    logger.info(f"Plex Discord Bot has logged in as {bot.user}")
-
-
-def append_items():
-    response = "**QUEUE ITEMS**"
-    response += "\n--------------------\n"
-    timezone = pytz.timezone(Config.APP_TIMEZONE)
-    play_time = datetime.now(timezone)
-    for item in client.items:
-        runtime = (item.duration - item.viewOffset)
-        time_delta = timedelta(milliseconds=runtime)
-        response += f"{item.title} ({item.year}) **[{play_time.strftime('%b %d | %I:%M %p %Z')}]**\n"
-        play_time = play_time + time_delta
-    return response
-
-
-def append_search(results):
-    response = "**SEARCH RESULTS**"
-    response += "\n--------------------\n"
-    response += "*(use /play command with Media ID to play item)*\n"
-    response += "*(use /add command with Media ID to queue item next)*"
-    response += "\n--------------------\n"
-    for result in results:
-        if result.type == "collection":
-            continue
-        response += f"{result.title} ({result.year}) **[media_id: {result.ratingKey}]**\n"
-    return response
+    logger.info(f"Plex discord bot has logged in as {bot.user}")
 
 
 @bot.command(description="Media items in queue")
