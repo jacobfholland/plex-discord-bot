@@ -54,7 +54,7 @@ TODO: Environment variables will not-reset themselves if they already exist at r
 
 #### PLEX
 - `PLEX_URL`
-    - The URL of your plex server. Including HTTP/HTTP protocal. (Ex http://192.168.0.69)
+    - The URL of your plex server. Including HTTP/HTTPS protocal. (Ex http://192.168.0.69)
 - `PLEX_PORT` *(int)*
     - Port for the plex server
 - `PLEX_TOKEN` *(str)*

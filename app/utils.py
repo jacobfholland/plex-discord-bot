@@ -1,5 +1,4 @@
 from app.config import Config
-from app.log import logger
 
 
 def mask(input):
