@@ -1,4 +1,4 @@
-from app.plex import plex
+from plex.plex import plex
 from config.config import Config
 from app.log import logger
 

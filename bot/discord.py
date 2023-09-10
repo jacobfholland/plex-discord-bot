@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta
 import logging
 import discord
-from app.library import Library
-from app.client import client
-from app.plex import plex
+from plex.library import Library
+from plex.client import client
+from plex.plex import plex
 import pytz
 from app.log import logger
 

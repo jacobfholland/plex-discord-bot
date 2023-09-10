@@ -1,7 +1,7 @@
 from config.config import Config
-from app.plex import plex
-from disc.discord import bot
-from app.client import client
+from plex.plex import plex
+from bot.discord import bot
+from plex.client import client
 from register_commands import register
 
 

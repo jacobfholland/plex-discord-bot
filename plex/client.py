@@ -1,6 +1,6 @@
 import time
 from plexapi.playqueue import PlayQueue
-from app.plex import plex
+from plex.plex import plex
 from app.utils import mask
 from config.config import Config
 from app.log import logger
