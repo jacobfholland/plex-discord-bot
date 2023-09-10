@@ -1,10 +1,11 @@
 import discord
+
+from discord_bot.bot import bot
 from discord_bot.log import logger
 from discord_bot.utils import append_items, append_search
 from plex.client import client
 from plex.library import Library
 from plex.plex import plex
-from discord_bot.discord import bot
 
 
 @bot.event

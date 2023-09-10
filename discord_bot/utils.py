@@ -1,7 +1,9 @@
-import pytz
 from datetime import datetime, timedelta
-from plex.client import client
+
+import pytz
+
 from discord_bot.config import Config
+from plex.client import client
 
 
 def append_items():
