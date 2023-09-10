@@ -1,41 +1,42 @@
 import time
+
 from plexapi.playqueue import PlayQueue
-from plex.plex import plex
+
 from app.utils import mask
-from config.config import Config
-from app.log import logger
+from plex.config import Config
+from plex.log import logger
+from plex.plex import plex
 
 
 def auto_connect():
-    logger.debug("[CLIENT] Searching for client")
+    logger.debug("Searching for client")
     for client in plex.clients():
         if client.machineIdentifier == Config.PLEX_MACHINE_IDENTIFIER:
             logger.debug(
-                f"[CLIENT] Client found {mask(client.machineIdentifier)}")
+                f"Client found {mask(client.machineIdentifier)}")
             logger.info(
-                f"[CLIENT] Connecting to {mask(client.machineIdentifier)}")
+                f"Connecting to {mask(client.machineIdentifier)}")
             client = client.connect()
             logger.info(
-                f"[CLIENT] Connected to {mask(client.machineIdentifier)}")
+                f"Connected to {mask(client.machineIdentifier)}")
             return client
 
 
 class Client():
     def __init__(self, obj):
         self.obj = obj
-        self.machine_identifier = self.obj.machineIdentifier
 
     def request_timeline(self, attempt=2):
-        logger.info("[CLIENT] Requesting timeline")
+        logger.info("Requesting timeline")
         if attempt == Config.PLEX_ATTEMPTS:
             return None
         timeline = self.obj.timeline
         if timeline:
             logger.info(
-                f"[CLIENT] Timeline retrieved (playQueueID: {timeline.playQueueID})")
+                f"Timeline retrieved (playQueueID: {timeline.playQueueID})")
             return timeline
         logger.warning(
-            f"[CLIENT] Requesting timeline request (attempt: {attempt})")
+            f"Requesting timeline request (attempt: {attempt})")
         time.sleep(Config.PLEX_ATTEMPT_TIMEOUT)
         return self.request_timeline(attempt=attempt+1)
 
@@ -83,5 +84,5 @@ class Client():
         self.next()
 
 
-connection = auto_connect()
-client = Client(connection)
+client = auto_connect()
+client = Client(client)

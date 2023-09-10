@@ -1,9 +1,10 @@
-from config.config import Config
-from plex.plex import plex
+from app.config import Config
+from app.log import logger
+from bot.config import Config as DiscordConfig
 from bot.discord import bot
-from plex.client import client
-from register_commands import register
 
+# from plex.plex import plex
+# from plex.client import client
 
-# register()
-bot.run(Config.DISCORD_BOT_TOKEN)
+logger.info("Starting application")
+bot.run(DiscordConfig.DISCORD_BOT_TOKEN)

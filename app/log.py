@@ -1,10 +1,11 @@
-import coloredlogs
 import logging
-from config.config import Config
+
+import coloredlogs
+
+from app.config import Config
 
 
-def setup_logger(name):
-
+def setup_logger(name, config):
     log_levels = {
         "DEBUG": logging.DEBUG,
         "INFO": logging.INFO,
@@ -14,24 +15,30 @@ def setup_logger(name):
     }
     # Set up a logger
     logger = logging.getLogger(name)
-    logger.setLevel(log_levels.get(Config.LOG_LEVEL))
+    logger.setLevel(log_levels.get(config.LOG_LEVEL))
 
     # Add colored handler for console output
-    coloredlogs.install(level=Config.LOG_LEVEL, logger=logger)
+    coloredlogs.install(level=config.LOG_LEVEL, logger=logger)
 
     # Create a FileHandler for logging to a file
-    file_handler = logging.FileHandler('mediarr.log')
-    file_handler.setLevel(log_levels.get(Config.LOG_LEVEL))
+    file_handler = logging.FileHandler(f"{config.LOG_PATH}/{name.lower()}.log")
+    file_handler.setLevel(log_levels.get(config.LOG_LEVEL))
+
+    app_file_handler = logging.FileHandler(
+        f"{config.LOG_PATH}/{config.APP_NAME.lower()}.log")
+    app_file_handler.setLevel(log_levels.get(config.LOG_LEVEL))
 
     # Create a formatter and set it for the file handler
     formatter = logging.Formatter(
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     file_handler.setFormatter(formatter)
+    app_file_handler.setFormatter(formatter)
 
     # Add the file handler to the logger
     logger.addHandler(file_handler)
+    logger.addHandler(app_file_handler)
 
     return logger
 
 
-logger = setup_logger("mediarr")
+logger = setup_logger(f"{Config.APP_NAME.lower()}.app", Config)

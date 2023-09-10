@@ -1,6 +1,5 @@
-from plex.plex import plex
-from config.config import Config
-from app.log import logger
+from plex.config import Config
+from plex.log import logger
 
 
 class Library:
@@ -8,7 +7,7 @@ class Library:
         self.obj = obj
 
     def search(self, title, **kwargs):
-        msg = f"[LIBRARY] Searching (title: {title})"
+        msg = f"Searching (title: {title})"
         if kwargs:
             msg += f" (kwargs: {kwargs})"
         logger.info(msg)

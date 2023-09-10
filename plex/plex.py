@@ -1,6 +1,6 @@
 from plexapi.server import PlexServer
 
-from config.config import Config
+from plex.config import Config
 
 
 class Plex():
@@ -8,8 +8,8 @@ class Plex():
         self.obj = obj
 
 
-connection = PlexServer(
+plex = PlexServer(
     baseurl=f"{Config.PLEX_IP_ADDRESS}:{Config.PLEX_PORT}",
     token=Config.PLEX_TOKEN
 )
-plex = Plex(connection).obj
+plex = Plex(plex).obj
