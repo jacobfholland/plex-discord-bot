@@ -1,6 +1,6 @@
 from plexapi.server import PlexServer
 
-from plex.config import Config
+from addons.plex.config import Config
 
 
 class Plex():

@@ -1,5 +1,5 @@
-from plex.config import Config
-from plex.log import logger
+from addons.plex.config import Config
+from addons.plex.log import logger
 
 
 class Library:

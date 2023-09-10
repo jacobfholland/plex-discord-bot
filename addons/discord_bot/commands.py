@@ -1,11 +1,10 @@
 import discord
-
-from discord_bot.bot import bot
-from discord_bot.log import logger
-from discord_bot.utils import append_items, append_search
-from plex.client import client
-from plex.library import Library
-from plex.plex import plex
+from addons.discord_bot.bot import bot
+from addons.discord_bot.utils import append_items, append_search
+from addons.discord_bot.log import logger
+from addons.plex.client import client
+from addons.plex.library import Library
+from addons.plex.plex import plex
 
 
 @bot.event

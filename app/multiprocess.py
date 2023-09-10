@@ -3,8 +3,8 @@ import signal
 
 from app.app import main
 from app.log import logger as app_logger
-from discord_bot.bot import process as discord_bot_process
-from discord_bot.log import logger as discord_logger
+from addons.discord_bot.bot import process as discord_bot_process
+from addons.discord_bot.log import logger as discord_logger
 
 
 def graceful_exit(signum, frame):

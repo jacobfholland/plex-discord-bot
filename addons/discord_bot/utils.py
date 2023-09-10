@@ -2,8 +2,8 @@ from datetime import datetime, timedelta
 
 import pytz
 
-from discord_bot.config import Config
-from plex.client import client
+from addons.discord_bot.config import Config
+from addons.plex.client import client
 
 
 def append_items():

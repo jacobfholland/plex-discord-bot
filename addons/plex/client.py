@@ -3,9 +3,9 @@ import time
 from plexapi.playqueue import PlayQueue
 
 from app.utils import mask
-from plex.config import Config
-from plex.log import logger
-from plex.plex import plex
+from addons.plex.config import Config
+from addons.plex.log import logger
+from addons.plex.plex import plex
 
 
 def auto_connect():

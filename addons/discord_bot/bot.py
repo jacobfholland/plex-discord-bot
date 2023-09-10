@@ -3,8 +3,8 @@ from multiprocessing import Process
 
 import discord
 
-from discord_bot.config import Config
-from discord_bot.log import logger
+from addons.discord_bot.config import Config
+from addons.discord_bot.log import logger
 
 
 def run_bot():
@@ -22,7 +22,7 @@ bot = discord.Bot()
 
 
 def import_commands():
-    from discord_bot import commands
+    from addons.discord_bot import commands
 
 
 import_commands()
