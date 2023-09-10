@@ -2,12 +2,13 @@
 
 ## Installation
 After cloning the repository navigate to the project directory
+
+- Create a Discord application. Review the Discord documentation for mor information about [creating an application](https://discord.com/developers/docs/getting-started).
+
 - Install PIP requirements
 ```
 pip install -r requirements.txt
 ```
-
-- Create a Discord application. Review the Discord documentation for mor information about [creating an application](https://discord.com/developers/docs/getting-started).
 
 - Set your environment variables
     - You can modify the name of `.env-example` to `.env` and use it as a template
