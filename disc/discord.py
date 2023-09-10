@@ -33,7 +33,7 @@ def append_items():
 def append_search(results):
     response = "**SEARCH RESULTS**"
     response += "\n--------------------\n"
-    response += "*(use /play command with Media ID to play item)*"
+    response += "*(use /play command with Media ID to play item)*\n"
     response += "*(use /add command with Media ID to queue item next)*"
     response += "\n--------------------\n"
     for result in results:
