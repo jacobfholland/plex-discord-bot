@@ -1,129 +1,87 @@
-from plexapi.myplex import MyPlexAccount
+import time
 from plexapi.playqueue import PlayQueue
-from app.library import Library
-
 from app.plex import plex
+from app.utils import mask
 from config.config import Config
+from app.log import logger
 
 
-def custom_sort_key(url):
-    if '127.0' in url:
-        return (0, url)
-    elif '192.168' in url:
-        return (1, url)
-    else:
-        return (2, url)
+def auto_connect():
+    logger.debug("[CLIENT] Searching for client")
+    for client in plex.clients():
+        if client.machineIdentifier == Config.PLEX_MACHINE_IDENTIFIER:
+            logger.debug(
+                f"[CLIENT] Client found {mask(client.machineIdentifier)}")
+            logger.info(
+                f"[CLIENT] Connecting to {mask(client.machineIdentifier)}")
+            client = client.connect()
+            logger.info(
+                f"[CLIENT] Connected to {mask(client.machineIdentifier)}")
+            return client
 
 
-class Client:
-    def __init__(self) -> None:
-        self.client = self.connect_client()
+class Client():
+    def __init__(self, obj):
+        self.obj = obj
+        self.machine_identifier = self.obj.machineIdentifier
 
-    def connect_client(self):
-        print("Logging into Plex account")
-        account = MyPlexAccount(Config.PLEX_USERNAME, Config.PLEX_PASSWORD)
-        print("Logged in!")
-        print("Finding client")
-        for device in account.devices():
-            if device.clientIdentifier == Config.PLEX_MACHINE_IDENTIFIER:
-                print("Connecting to Plex client")
-                # print(type(device.connections))
-                device.connections = sorted(
-                    device.connections, key=custom_sort_key)
-                # print(device.connections)
-                client = device.connect()
-                # print(vars(device))
-                print("Connected to Plex client!")
-                return client
+    def request_timeline(self, attempt=2):
+        logger.info("[CLIENT] Requesting timeline")
+        if attempt == Config.PLEX_ATTEMPTS:
+            return None
+        timeline = self.obj.timeline
+        if timeline:
+            logger.info(
+                f"[CLIENT] Timeline retrieved (playQueueID: {timeline.playQueueID})")
+            return timeline
+        logger.warning(
+            f"[CLIENT] Requesting timeline request (attempt: {attempt})")
+        time.sleep(Config.PLEX_ATTEMPT_TIMEOUT)
+        return self.request_timeline(attempt=attempt+1)
 
-    def play(self):
-        self.client.play()
+    @property
+    def queue(self):
+        timeline = self.request_timeline()
+        if timeline:
+            queue = PlayQueue.get(
+                plex,
+                timeline.playQueueID,
+                includeBefore=False
+            )
+            media = plex.fetchItem(timeline.ratingKey)
+            queue.items.insert(0, media)
+            return queue
+        return None
+
+    @property
+    def items(self):
+        queue = self.queue
+        if queue:
+            return queue.items[:Config.PLEX_SEARCH_LIMIT]
+        return None
+
+    def add(self, media, next=True):
+        queue = self.queue
+        queue.addItem(media, playNext=next)
+        self.obj.refreshPlayQueue(queue.playQueueID)
+
+    def resume(self):
+        return self.obj.play()
 
     def pause(self):
-        self.client.pause()
-
-    def stop(self):
-        self.client.stop()
-
-    def seek(self, offset):
-        # Offset in milliseconds
-        self.client.seekTo(offset=offset)
+        return self.obj.pause()
 
     def next(self):
-        self.client.skipNext()
+        return self.obj.skipNext()
 
     def previous(self):
-        self.client.skipPrevious()
+        return self.obj.skipPrevious()
 
-    def skip_to(self, key):
-        # Key from media object
-        self.client.skipTo(key)
-
-    def step_back(self):
-        self.client.stepBack()
-
-    def step_forward(self):
-        self.client.stepForward()
-
-    def shuffle(self, shuffle):
-        # Shuffle is integer: 0 off, 1 on
-        self.client.setShuffle(shuffle)
-
-    def play_media(self, metadata_id, offset=0):
-        media = plex.fetchItem(metadata_id)
-        self.client.playMedia(media)
-
-    def timeline(self):
-        return self.client.timeline
-
-    def is_playing(self):
-        # Media is media object
-        return self.client.isPlayingMedia()
-
-    def queue(self):
-        queue = PlayQueue.get(
-            plex,
-            self.timeline().playQueueID,
-            includeBefore=False
-        )
-        media = plex.fetchItem(self.timeline().ratingKey)
-        queue.items.insert(0, media)
-        self.client.refreshPlayQueue(queue.playQueueID)
-
-        return queue
-
-    def queue_items(self):
-        queue = self.queue()
-        return queue.items[:Config.PLEX_SEARCH_LIMIT]
-
-    def queue_add(self, metadata_id, next=True):
-        media = plex.fetchItem(metadata_id)
-        queue = self.queue()
-        queue.addItem(media, playNext=next)
-        self.client.refreshPlayQueue(queue.playQueueID)
-        return queue
-
-    def queue_remove(self, metadata_id):
-        media = plex.fetchItem(metadata_id)
-        queue = self.queue()
-        queue.removeItem(media)
-        self.client.refreshPlayQueue(queue.playQueueID)
-        return queue
-
-    def queue_remove(self, metadata_id):
-        media = plex.fetchItem(metadata_id)
-        queue = self.queue()
-        queue.removeItem(media)
-        self.client.refreshPlayQueue(queue.playQueueID)
-        return queue
-
-    def queue_move(self, metadata_id):
-        # TODO: afterItemID for specifying where to move to
-        media = plex.fetchItem(metadata_id)
-        queue = self.queue()
-        queue.moveItem(media)
-        self.client.refreshPlayQueue(queue.playQueueID)
-        return queue
+    def play(self, media):
+        self.add(media)
+        time.sleep(2)
+        self.next()
 
 
-client = Client()
+connection = auto_connect()
+client = Client(connection)

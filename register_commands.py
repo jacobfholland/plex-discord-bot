@@ -28,8 +28,8 @@ def register():
         ]
     }
 
-    play_media = {
-        "name": "play_media",
+    play = {
+        "name": "play",
         "description": "Play a media item",
         "options": [
             {
@@ -70,7 +70,7 @@ def register():
     }
 
     commands = [
-        search, play_media,
+        search, play,
         pause, play, queue,
         queue_add
     ]
