@@ -128,7 +128,7 @@ async def next(ctx):
     await ctx.defer()
     try:
         await ctx.respond(f"Skipping to the next queue item")
-        client.skipNext()
+        client.next()
         response = append_items()
         await ctx.respond(response)
     except Exception as e:
@@ -141,7 +141,7 @@ async def prev(ctx):
     await ctx.defer()
     try:
         await ctx.respond(f"Skipping to the previous queue item (prev)")
-        client.skipPrev()
+        client.prev()
         response = append_items()
         await ctx.respond(response)
     except Exception as e:
