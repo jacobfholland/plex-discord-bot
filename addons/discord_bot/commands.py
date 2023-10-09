@@ -142,6 +142,7 @@ async def prev(ctx):
     try:
         await ctx.respond(f"Skipping to the previous queue item (prev)")
         client.previous()
+        client.previous()
         response = append_items()
         await ctx.respond(response)
     except Exception as e:
