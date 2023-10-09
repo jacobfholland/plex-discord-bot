@@ -5,6 +5,7 @@ from addons.discord_bot.log import logger
 from addons.plex.client import client
 from addons.plex.library import Library
 from addons.plex.plex import plex
+from addons.discord_bot.config import Config
 
 
 @bot.event
@@ -12,6 +13,20 @@ async def on_ready():
     logger.info(f"Plex discord bot has logged in as {bot.user}")
 
 
+def role_check(func):
+    async def wrapper(ctx, *args, **kwargs):
+        # Check if the author has any of the specified role IDs
+        for role in ctx.author.roles:
+            if role.id in Config.DISCORD_ROLE_IDS:
+                # Call the original function and pass the ctx along with any other arguments
+                await ctx.send("You have the required roles to use this command.")
+                await func(ctx, *args, **kwargs)
+        # If the author doesn't have any of the specified roles, you can handle it here
+        await ctx.send("You don't have the required roles to use this command.")
+    return wrapper
+
+
+@role_check
 @bot.command(description="Media items in queue")
 async def queue(ctx):
     await ctx.defer()
@@ -106,3 +121,29 @@ async def add(
     except Exception as e:
         logger.error(f"An error occurred adding queue item. {e}")
         await ctx.respond(f"An error occurred adding queue item. {e}")
+
+
+@bot.command(description="Skips to the next media item in queue")
+async def next(ctx):
+    await ctx.defer()
+    try:
+        await ctx.respond(f"Skipping to the next queue item")
+        client.skipNext()
+        response = append_items()
+        await ctx.respond(response)
+    except Exception as e:
+        logger.error(f"An error occurred skiping queue item. {e}")
+        await ctx.respond(f"An error occurred skiping queue item. {e}")
+
+
+@bot.command(description="Skips to the previous media item queue")
+async def prev(ctx):
+    await ctx.defer()
+    try:
+        await ctx.respond(f"Skipping to the previous queue item (prev)")
+        client.skipPrev()
+        response = append_items()
+        await ctx.respond(response)
+    except Exception as e:
+        logger.error(f"An error occurred skiping queue item. {e}")
+        await ctx.respond(f"An error occurred skiping queue item. {e}")
